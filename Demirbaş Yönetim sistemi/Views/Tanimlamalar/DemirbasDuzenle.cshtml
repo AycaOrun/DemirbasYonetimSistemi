@@ -1,0 +1,44 @@
+﻿
+@model Demirbaş_Yönetim_sistemi.demirbas
+@{
+    ViewBag.Title = "Demirbaş Düzenle";
+    var demirbas = ViewBag.liste as List<Demirbaş_Yönetim_sistemi.demirbas>;
+}
+
+<h2>Demirbaş Güncelle</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.id)
+
+    <div class="mb-3 row">
+        <label for="adi" class="col-md-2 col-form-label">Ad:</label>
+        <div class="col-md-4">
+            @Html.TextBoxFor(m => m.adi, new { @class = "form-control", @id = "adi" })
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label for="seri_no" class="col-md-2 col-form-label">Seri numarası:</label>
+        <div class="col-md-4">
+            @Html.TextBoxFor(m => m.seri_no, new { @class = "form-control", @id = "seri numarası" })
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label for="mac" class="col-md-2 col-form-label">Mac:</label>
+        <div class="col-md-4">
+            @Html.TextBoxFor(m => m.mac, new { @class = "form-control", @id = "seri numarası" })
+        </div>
+    </div>
+
+
+
+    <div class="mb-3 row">
+        <div class="col-md-6">
+            <button type="submit" class="btn btn-success">Kaydet</button>
+            <a href="@Url.Action("DemirbasTanimlama")" class="btn btn-secondary">İptal</a>
+        </div>
+    </div>
+}

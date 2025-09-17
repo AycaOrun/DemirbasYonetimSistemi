@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="7815485d5fe14ffc8b6cf0376e330e25" Name="Diagram2" ZoomLevel="101" >
+        <EntityTypeShape EntityType="demirbasModel.demirbas" Width="1.5" PointX="0.75" PointY="1" />
+        <EntityTypeShape EntityType="demirbasModel.ustune_zimmet" Width="1.5" PointX="3" PointY="1" />
+        <AssociationConnector Association="demirbasModel.FK_demirbas_demirbas" />
+        <AssociationConnector Association="demirbasModel.FK_ustune_zimmet_demirbas" />
+        <EntityTypeShape EntityType="demirbasModel.departman" Width="1.5" PointX="0.75" PointY="5.625" />
+        <EntityTypeShape EntityType="demirbasModel.personel" Width="1.5" PointX="3" PointY="4.875" />
+        <AssociationConnector Association="demirbasModel.FK__personel__kullan__5AEE82B9" />
+        <AssociationConnector Association="demirbasModel.FK_personel_personel" />
+        <AssociationConnector Association="demirbasModel.FK_ustune_zimmet_personel" />
+        <EntityTypeShape EntityType="demirbasModel.view_PersonelDepartman" Width="1.5" PointX="5.375" PointY="0.75" />
+        <EntityTypeShape EntityType="demirbasModel.view_ustunezimmet" Width="1.5" PointX="5.375" PointY="3.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,518 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="demirbasModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AspNetUserClaims">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ClaimType" Type="nvarchar(max)" />
+          <Property Name="ClaimValue" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="demirbas">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="seri_no" Type="nvarchar" MaxLength="50" />
+          <Property Name="mac" Type="nvarchar" MaxLength="50" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="kayit_kullanici_id" Type="nvarchar" MaxLength="128" />
+          <Property Name="adi" Type="nvarchar" MaxLength="500" />
+          <Property Name="kayit_tarihi" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="departman">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Adi" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="personel">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="ad" Type="nvarchar" MaxLength="50" />
+          <Property Name="soyad" Type="nvarchar" MaxLength="50" />
+          <Property Name="durum" Type="int" Nullable="false" />
+          <Property Name="ise_baslangic" Type="date" Nullable="false" />
+          <Property Name="isten_cikis" Type="date" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="kayit_kullanici_id" Type="nvarchar" MaxLength="128" />
+          <Property Name="kayit_tarihi" Type="datetime" />
+          <Property Name="departman_Id" Type="int" />
+        </EntityType>
+        <EntityType Name="ustune_zimmet">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="personel_id" Type="int" Nullable="false" />
+          <Property Name="demirbas_id" Type="int" Nullable="false" />
+          <Property Name="zimmet_baslangic" Type="date" Nullable="false" />
+          <Property Name="zimmet_bitis" Type="date" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="kayit_kullanici_id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="kayit_tarihi" Type="datetime" />
+          <Property Name="durum" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'demirbas.dbo.view_PersonelDepartman' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_PersonelDepartman">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="durum" />
+            <PropertyRef Name="baslangic" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="durum" Type="int" Nullable="false" />
+          <Property Name="baslangic" Type="date" Nullable="false" />
+          <Property Name="adsoyad" Type="nvarchar" MaxLength="101" />
+          <Property Name="Adi" Type="nvarchar" MaxLength="128" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'demirbas.dbo.view_ustunezimmet' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="view_ustunezimmet">
+          <Key>
+            <PropertyRef Name="personel_id" />
+            <PropertyRef Name="demirbas_id" />
+            <PropertyRef Name="zimmet_baslangic" />
+            <PropertyRef Name="id" />
+            <PropertyRef Name="kayit_kullanici_id" />
+          </Key>
+          <Property Name="personel_id" Type="int" Nullable="false" />
+          <Property Name="demirbas_id" Type="int" Nullable="false" />
+          <Property Name="zimmet_baslangic" Type="date" Nullable="false" />
+          <Property Name="durum" Type="int" />
+          <Property Name="zimmet_bitis" Type="date" />
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="kayit_kullanici_id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="kayit_tarihi" Type="datetime" />
+          <Property Name="mac" Type="nvarchar" MaxLength="50" />
+          <Property Name="adi" Type="nvarchar" MaxLength="500" />
+          <Property Name="seri_no" Type="nvarchar" MaxLength="50" />
+          <Property Name="adsoyad" Type="nvarchar" MaxLength="101" />
+        </EntityType>
+        <Association Name="FK__personel__kullan__5AEE82B9">
+          <End Role="departman" Type="Self.departman" Multiplicity="0..1" />
+          <End Role="personel" Type="Self.personel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="departman">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="personel">
+              <PropertyRef Name="departman_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_demirbas_demirbas">
+          <End Role="demirbas" Type="Self.demirbas" Multiplicity="1" />
+          <End Role="demirbas1" Type="Self.demirbas" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="demirbas">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="demirbas1">
+              <PropertyRef Name="id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_personel_personel">
+          <End Role="departman" Type="Self.departman" Multiplicity="0..1" />
+          <End Role="personel" Type="Self.personel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="departman">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="personel">
+              <PropertyRef Name="departman_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ustune_zimmet_demirbas">
+          <End Role="demirbas" Type="Self.demirbas" Multiplicity="1" />
+          <End Role="ustune_zimmet" Type="Self.ustune_zimmet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="demirbas">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ustune_zimmet">
+              <PropertyRef Name="demirbas_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ustune_zimmet_personel">
+          <End Role="personel" Type="Self.personel" Multiplicity="1" />
+          <End Role="ustune_zimmet" Type="Self.ustune_zimmet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="personel">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ustune_zimmet">
+              <PropertyRef Name="personel_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="demirbasModelStoreContainer">
+          <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="demirbas" EntityType="Self.demirbas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="departman" EntityType="Self.departman" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="personel" EntityType="Self.personel" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ustune_zimmet" EntityType="Self.ustune_zimmet" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="view_PersonelDepartman" EntityType="Self.view_PersonelDepartman" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_PersonelDepartman].[id] AS [id], 
+    [view_PersonelDepartman].[durum] AS [durum], 
+    [view_PersonelDepartman].[baslangic] AS [baslangic], 
+    [view_PersonelDepartman].[adsoyad] AS [adsoyad], 
+    [view_PersonelDepartman].[Adi] AS [Adi]
+    FROM [dbo].[view_PersonelDepartman] AS [view_PersonelDepartman]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="view_ustunezimmet" EntityType="Self.view_ustunezimmet" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_ustunezimmet].[personel_id] AS [personel_id], 
+    [view_ustunezimmet].[demirbas_id] AS [demirbas_id], 
+    [view_ustunezimmet].[zimmet_baslangic] AS [zimmet_baslangic], 
+    [view_ustunezimmet].[durum] AS [durum], 
+    [view_ustunezimmet].[zimmet_bitis] AS [zimmet_bitis], 
+    [view_ustunezimmet].[id] AS [id], 
+    [view_ustunezimmet].[kayit_kullanici_id] AS [kayit_kullanici_id], 
+    [view_ustunezimmet].[kayit_tarihi] AS [kayit_tarihi], 
+    [view_ustunezimmet].[mac] AS [mac], 
+    [view_ustunezimmet].[adi] AS [adi], 
+    [view_ustunezimmet].[seri_no] AS [seri_no], 
+    [view_ustunezimmet].[adsoyad] AS [adsoyad]
+    FROM [dbo].[view_ustunezimmet] AS [view_ustunezimmet]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK__personel__kullan__5AEE82B9" Association="Self.FK__personel__kullan__5AEE82B9">
+            <End Role="departman" EntitySet="departman" />
+            <End Role="personel" EntitySet="personel" />
+          </AssociationSet>
+          <AssociationSet Name="FK_demirbas_demirbas" Association="Self.FK_demirbas_demirbas">
+            <End Role="demirbas" EntitySet="demirbas" />
+            <End Role="demirbas1" EntitySet="demirbas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_personel_personel" Association="Self.FK_personel_personel">
+            <End Role="departman" EntitySet="departman" />
+            <End Role="personel" EntitySet="personel" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ustune_zimmet_demirbas" Association="Self.FK_ustune_zimmet_demirbas">
+            <End Role="demirbas" EntitySet="demirbas" />
+            <End Role="ustune_zimmet" EntitySet="ustune_zimmet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ustune_zimmet_personel" Association="Self.FK_ustune_zimmet_personel">
+            <End Role="personel" EntitySet="personel" />
+            <End Role="ustune_zimmet" EntitySet="ustune_zimmet" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="demirbasModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="demirbasEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AspNetUserClaims" EntityType="demirbasModel.AspNetUserClaims" />
+          <EntitySet Name="demirbas" EntityType="demirbasModel.demirbas" />
+          <EntitySet Name="ustune_zimmet" EntityType="demirbasModel.ustune_zimmet" />
+          <AssociationSet Name="FK_demirbas_demirbas" Association="demirbasModel.FK_demirbas_demirbas">
+            <End Role="demirbas" EntitySet="demirbas" />
+            <End Role="demirbas1" EntitySet="demirbas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ustune_zimmet_demirbas" Association="demirbasModel.FK_ustune_zimmet_demirbas">
+            <End Role="demirbas" EntitySet="demirbas" />
+            <End Role="ustune_zimmet" EntitySet="ustune_zimmet" />
+          </AssociationSet>
+          <EntitySet Name="departman" EntityType="demirbasModel.departman" />
+          <EntitySet Name="personel" EntityType="demirbasModel.personel" />
+          <AssociationSet Name="FK__personel__kullan__5AEE82B9" Association="demirbasModel.FK__personel__kullan__5AEE82B9">
+            <End Role="departman" EntitySet="departman" />
+            <End Role="personel" EntitySet="personel" />
+          </AssociationSet>
+          <AssociationSet Name="FK_personel_personel" Association="demirbasModel.FK_personel_personel">
+            <End Role="departman" EntitySet="departman" />
+            <End Role="personel" EntitySet="personel" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ustune_zimmet_personel" Association="demirbasModel.FK_ustune_zimmet_personel">
+            <End Role="personel" EntitySet="personel" />
+            <End Role="ustune_zimmet" EntitySet="ustune_zimmet" />
+          </AssociationSet>
+          <EntitySet Name="view_PersonelDepartman" EntityType="demirbasModel.view_PersonelDepartman" />
+          <EntitySet Name="view_ustunezimmet" EntityType="demirbasModel.view_ustunezimmet" />
+        </EntityContainer>
+        <EntityType Name="AspNetUserClaims">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ClaimType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ClaimValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="demirbas">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="seri_no" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="mac" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="kayit_kullanici_id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="adi" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="kayit_tarihi" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="demirbas1" Relationship="demirbasModel.FK_demirbas_demirbas" FromRole="demirbas" ToRole="demirbas1" />
+          <NavigationProperty Name="demirbas2" Relationship="demirbasModel.FK_demirbas_demirbas" FromRole="demirbas1" ToRole="demirbas" />
+          <NavigationProperty Name="ustune_zimmet" Relationship="demirbasModel.FK_ustune_zimmet_demirbas" FromRole="demirbas" ToRole="ustune_zimmet" />
+        </EntityType>
+        <EntityType Name="ustune_zimmet">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="personel_id" Type="Int32" Nullable="false" />
+          <Property Name="demirbas_id" Type="Int32" Nullable="false" />
+          <Property Name="zimmet_baslangic" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="zimmet_bitis" Type="DateTime" Precision="0" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="kayit_kullanici_id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="kayit_tarihi" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="demirbas" Relationship="demirbasModel.FK_ustune_zimmet_demirbas" FromRole="ustune_zimmet" ToRole="demirbas" />
+          <NavigationProperty Name="personel" Relationship="demirbasModel.FK_ustune_zimmet_personel" FromRole="ustune_zimmet" ToRole="personel" />
+          <Property Name="durum" Type="Int32" />
+        </EntityType>
+        <Association Name="FK_demirbas_demirbas">
+          <End Type="demirbasModel.demirbas" Role="demirbas" Multiplicity="1" />
+          <End Type="demirbasModel.demirbas" Role="demirbas1" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="demirbas">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="demirbas1">
+              <PropertyRef Name="id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ustune_zimmet_demirbas">
+          <End Type="demirbasModel.demirbas" Role="demirbas" Multiplicity="1" />
+          <End Type="demirbasModel.ustune_zimmet" Role="ustune_zimmet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="demirbas">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ustune_zimmet">
+              <PropertyRef Name="demirbas_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="departman">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Adi" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="personel" Relationship="demirbasModel.FK__personel__kullan__5AEE82B9" FromRole="departman" ToRole="personel" />
+          <NavigationProperty Name="personel1" Relationship="demirbasModel.FK_personel_personel" FromRole="departman" ToRole="personel" />
+        </EntityType>
+        <EntityType Name="personel">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="ad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="soyad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="durum" Type="Int32" Nullable="false" />
+          <Property Name="ise_baslangic" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="isten_cikis" Type="DateTime" Precision="0" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="kayit_kullanici_id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="kayit_tarihi" Type="DateTime" Precision="3" />
+          <Property Name="departman_Id" Type="Int32" />
+          <NavigationProperty Name="departman" Relationship="demirbasModel.FK__personel__kullan__5AEE82B9" FromRole="personel" ToRole="departman" />
+          <NavigationProperty Name="departman1" Relationship="demirbasModel.FK_personel_personel" FromRole="personel" ToRole="departman" />
+          <NavigationProperty Name="ustune_zimmet" Relationship="demirbasModel.FK_ustune_zimmet_personel" FromRole="personel" ToRole="ustune_zimmet" />
+        </EntityType>
+        <Association Name="FK__personel__kullan__5AEE82B9">
+          <End Type="demirbasModel.departman" Role="departman" Multiplicity="0..1" />
+          <End Type="demirbasModel.personel" Role="personel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="departman">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="personel">
+              <PropertyRef Name="departman_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_personel_personel">
+          <End Type="demirbasModel.departman" Role="departman" Multiplicity="0..1" />
+          <End Type="demirbasModel.personel" Role="personel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="departman">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="personel">
+              <PropertyRef Name="departman_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ustune_zimmet_personel">
+          <End Type="demirbasModel.personel" Role="personel" Multiplicity="1" />
+          <End Type="demirbasModel.ustune_zimmet" Role="ustune_zimmet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="personel">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ustune_zimmet">
+              <PropertyRef Name="personel_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="view_PersonelDepartman">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="durum" />
+            <PropertyRef Name="baslangic" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="durum" Type="Int32" Nullable="false" />
+          <Property Name="baslangic" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="adsoyad" Type="String" MaxLength="101" FixedLength="false" Unicode="true" />
+          <Property Name="Adi" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="view_ustunezimmet">
+          <Key>
+            <PropertyRef Name="personel_id" />
+            <PropertyRef Name="demirbas_id" />
+            <PropertyRef Name="zimmet_baslangic" />
+            <PropertyRef Name="id" />
+            <PropertyRef Name="kayit_kullanici_id" />
+          </Key>
+          <Property Name="personel_id" Type="Int32" Nullable="false" />
+          <Property Name="demirbas_id" Type="Int32" Nullable="false" />
+          <Property Name="zimmet_baslangic" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="durum" Type="Int32" />
+          <Property Name="zimmet_bitis" Type="DateTime" Precision="0" />
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="kayit_kullanici_id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="kayit_tarihi" Type="DateTime" Precision="3" />
+          <Property Name="mac" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="adi" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="seri_no" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="adsoyad" Type="String" MaxLength="101" FixedLength="false" Unicode="true" />
+        </EntityType>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="demirbasModelStoreContainer" CdmEntityContainer="demirbasEntities1">
+          <EntitySetMapping Name="AspNetUserClaims">
+            <EntityTypeMapping TypeName="demirbasModel.AspNetUserClaims">
+              <MappingFragment StoreEntitySet="AspNetUserClaims">
+                <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
+                <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="demirbas">
+            <EntityTypeMapping TypeName="demirbasModel.demirbas">
+              <MappingFragment StoreEntitySet="demirbas">
+                <ScalarProperty Name="kayit_tarihi" ColumnName="kayit_tarihi" />
+                <ScalarProperty Name="adi" ColumnName="adi" />
+                <ScalarProperty Name="kayit_kullanici_id" ColumnName="kayit_kullanici_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="mac" ColumnName="mac" />
+                <ScalarProperty Name="seri_no" ColumnName="seri_no" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ustune_zimmet">
+            <EntityTypeMapping TypeName="demirbasModel.ustune_zimmet">
+              <MappingFragment StoreEntitySet="ustune_zimmet">
+                <ScalarProperty Name="durum" ColumnName="durum" />
+                <ScalarProperty Name="kayit_tarihi" ColumnName="kayit_tarihi" />
+                <ScalarProperty Name="kayit_kullanici_id" ColumnName="kayit_kullanici_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="zimmet_bitis" ColumnName="zimmet_bitis" />
+                <ScalarProperty Name="zimmet_baslangic" ColumnName="zimmet_baslangic" />
+                <ScalarProperty Name="demirbas_id" ColumnName="demirbas_id" />
+                <ScalarProperty Name="personel_id" ColumnName="personel_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="departman">
+            <EntityTypeMapping TypeName="demirbasModel.departman">
+              <MappingFragment StoreEntitySet="departman">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Adi" ColumnName="Adi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="personel">
+            <EntityTypeMapping TypeName="demirbasModel.personel">
+              <MappingFragment StoreEntitySet="personel">
+                <ScalarProperty Name="departman_Id" ColumnName="departman_Id" />
+                <ScalarProperty Name="kayit_tarihi" ColumnName="kayit_tarihi" />
+                <ScalarProperty Name="kayit_kullanici_id" ColumnName="kayit_kullanici_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="isten_cikis" ColumnName="isten_cikis" />
+                <ScalarProperty Name="ise_baslangic" ColumnName="ise_baslangic" />
+                <ScalarProperty Name="durum" ColumnName="durum" />
+                <ScalarProperty Name="soyad" ColumnName="soyad" />
+                <ScalarProperty Name="ad" ColumnName="ad" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_PersonelDepartman">
+            <EntityTypeMapping TypeName="demirbasModel.view_PersonelDepartman">
+              <MappingFragment StoreEntitySet="view_PersonelDepartman">
+                <ScalarProperty Name="Adi" ColumnName="Adi" />
+                <ScalarProperty Name="adsoyad" ColumnName="adsoyad" />
+                <ScalarProperty Name="baslangic" ColumnName="baslangic" />
+                <ScalarProperty Name="durum" ColumnName="durum" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_ustunezimmet">
+            <EntityTypeMapping TypeName="demirbasModel.view_ustunezimmet">
+              <MappingFragment StoreEntitySet="view_ustunezimmet">
+                <ScalarProperty Name="adsoyad" ColumnName="adsoyad" />
+                <ScalarProperty Name="seri_no" ColumnName="seri_no" />
+                <ScalarProperty Name="adi" ColumnName="adi" />
+                <ScalarProperty Name="mac" ColumnName="mac" />
+                <ScalarProperty Name="kayit_tarihi" ColumnName="kayit_tarihi" />
+                <ScalarProperty Name="kayit_kullanici_id" ColumnName="kayit_kullanici_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="zimmet_bitis" ColumnName="zimmet_bitis" />
+                <ScalarProperty Name="durum" ColumnName="durum" />
+                <ScalarProperty Name="zimmet_baslangic" ColumnName="zimmet_baslangic" />
+                <ScalarProperty Name="demirbas_id" ColumnName="demirbas_id" />
+                <ScalarProperty Name="personel_id" ColumnName="personel_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

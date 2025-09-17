@@ -1,0 +1,128 @@
+﻿
+@{
+    ViewBag.Title = "zimmet_tanimlama";
+    List<Demirbaş_Yönetim_sistemi.demirbas> demirbaslar = ViewBag.ZimmetTipleri as List<Demirbaş_Yönetim_sistemi.demirbas>;
+    List<Demirbaş_Yönetim_sistemi.personel> PersonelListesi = ViewBag.Personeller as List<Demirbaş_Yönetim_sistemi.personel>;
+    List<Demirbaş_Yönetim_sistemi.view_ustunezimmet>  liste=ViewBag.ustune_zimmetler as List < Demirbaş_Yönetim_sistemi.view_ustunezimmet >;
+
+
+}
+
+
+
+@{
+    ViewBag.Title = "zimmet_tanimlama";
+}
+
+
+
+
+
+
+
+<div class="row">
+
+    <div class="col-md-6">
+        <h2>Zimmet Tanımlama</h2>
+
+        @using (Html.BeginForm())
+        {
+            <div class="form-group">
+                <div class="row">
+                    <label>Demirbaş Seçiniz:</label>
+                </div>
+            </div>
+
+            <select name="demirbas_id" id="demirbas_id" class="form-group"
+                    style="margin-bottom: 20px; padding: 8px; width: 200px;" onchange="demirbasSecildi(this.value)">
+                @{ for (int i = 0; i < demirbaslar.Count; i++)
+                    {
+                        <option value="@demirbaslar[i].id" id="@demirbaslar[i].id">@demirbaslar[i].adi</option>
+                    }
+                }
+            </select>
+
+
+
+            <div class="form-group">
+                <div class="row">
+                    <label>Personel seçiniz:</label>
+                </div>
+            </div>
+
+            <select name="personel_id" id="personel_id"
+                    style="margin-bottom: 30px; padding: 8px; width: 200px; margin-left: 0;">
+                @foreach (var personel in PersonelListesi)
+                {
+                    if (personel.durum == 1)
+                    {
+                        <option value="@personel.id">@personel.ad @personel.soyad</option>
+                    }
+                }
+            </select>
+
+
+
+            <div class="form-group">
+                <div class="row">
+                    <label>Zimmet Başlangıç Tarihi:</label>
+                </div>
+                <input type="date" name="zimmet_baslangic" id="zimmet_baslangic"
+                       style="margin-bottom: 30px; padding: 8px; width: 200px;" />
+            </div>
+
+            <div class="form-group">
+                <button type="submit" style="width: 120px; padding: 8px;">Kaydet</button>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+        }
+    </div>
+    <div class="col-md-6">
+        <h2>Kayıtlı Zimmetler</h2>
+        <table class="table">
+            <tr>
+                <th>Personel:</th>
+                <th>Demirbaş:</th>
+                <th>Zimmet Başlangıç:</th>
+                <th>Zimmet Bitiş:</th>
+            </tr>
+
+            @if (ViewBag.ustune_zimmetler != null)
+            {
+                foreach (var item in (List<Demirbaş_Yönetim_sistemi.view_ustunezimmet>)ViewBag.ustune_zimmetler)
+                {
+                    <tr>
+                        <td>@item.adsoyad</td>
+                        <td>@item.adi</td>
+                        <td>@item.zimmet_baslangic.ToString("dd.MM.yyyy")</td>
+                        <td>
+                            <form action="/ustunezimmet/BitisTarihiGuncelle" method="post" style="display: flex; gap: 5px;">
+                                <input type="hidden" name="id" value="@item.id" />
+                                <input type="date" name="zimmet_bitis" class="form-control" value="@(item.zimmet_bitis?.ToString("yyyy-MM-dd"))" />
+                                <button type="submit" class=btn btn-sm btn-primary>Kaydet</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            }
+        </table>
+    </div>
+
+    <div style="margin-top:20px;">
+        <a href="@Url.Action("ZimmetlerPdf", "ustunezimmet")" class="btn btn-danger">PDF Olarak İndir</a>
+        <a href="@Url.Action("ZimmetlerExcel", "ustunezimmet")" class="btn btn-success">Excel Olarak İndir</a>
+    </div>
+</div>
+
+
+

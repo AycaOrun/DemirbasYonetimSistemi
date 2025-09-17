@@ -1,0 +1,158 @@
+﻿
+<style>
+    .my-textbox,
+    .my-select {
+        width: 200px;
+        padding: 8px;
+        margin-bottom: 20px;
+    }
+
+    .pasif {
+        background-color: #ffcccc !important;
+    }
+
+    .aktif {
+        background-color: green !important;
+    }
+</style>
+
+
+@model List<Demirbaş_Yönetim_sistemi.Models.demirbas>
+
+
+@{
+    ViewBag.Title = "DemirbasTanimlama";
+    List<Demirbaş_Yönetim_sistemi.demirbas> demirbas = ViewBag.liste as List<Demirbaş_Yönetim_sistemi.demirbas>;
+
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <h2>Demirbaş Tanımla </h2>
+
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="container">
+                <div class="row mb-3">
+                    <div class="col-md-2">
+                        <label for="adi" class="form-label">Adı:</label>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" id="ad" name="adi" class="form-control my-textbox" />
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="container">
+                <div class="row mb-3">
+                    <div class="col-md-2">
+                        <label for="seri_no" class="form-label">Seri Numarası:</label>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" id="ad" name="seri_no" class="form-control my-textbox" />
+                    </div>
+                </div>
+
+            </div>
+            <div class="container">
+                <div class="row mb-3">
+                    <div class="col-md-2">
+                        <label for="mac" class="form-label">Mac adresi:</label>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" id="ad" name="mac" class="form-control my-textbox" />
+                    </div>
+                </div>
+
+            </div>
+            <div class="container">
+                <button type="submit">Kaydet</button>
+            </div>
+        }
+
+    </div>
+
+
+    <div class="col-md-6">
+        <h2>Demirbaş Listesi</h2>
+
+        <table class="table">
+            <tr>
+                <th>Adı:</th>
+                <th>Seri numarası:</th>
+                <th>Mac Adresi:</th>
+
+            </tr>
+            @if (ViewBag.liste != null)
+            {
+                var liste = (List<Demirbaş_Yönetim_sistemi.demirbas>)ViewBag.liste;
+
+                foreach (var item in demirbas)
+                {
+                    <tr>
+                        <td>@item.adi</td>
+                        <td>@item.seri_no</td>
+                        <td>@item.mac</td>
+                        <td>
+                            @Html.ActionLink("Düzenle", "DemirbasDuzenle", "Tanimlamalar", new { id = item.id }, new { @class = "btn btn-warning btn-sm" })
+                            <button class="btn btn-danger btn-sm btn-sil" data-id="@item.id">Sil</button>
+                        </td>
+
+                    </tr>
+                }
+            }
+
+        </table>
+    </div>
+
+
+
+   
+</div>
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    @Html.AntiForgeryToken()
+
+    <script>
+        function silDemirbas(id) {
+            if (!confirm("Bu kaydı silmek istediğinize emin misiniz?")) return;
+
+            var token = $('input[name="__RequestVerificationToken"]').val();
+
+            $.ajax({
+                url: '@Url.Action("DemirbasSil", "Tanimlamalar")',
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({ id: id }),
+                headers: {
+                    'RequestVerificationToken': token
+                },
+                success: function (response) {
+                    debugger;
+                    if (response.success) {
+                        $("#demirbas-row-" + id).fadeOut();
+                    } else {
+                        alert("Silme işlemi başarısız: " + response.mesaj);
+                    }
+                },
+                error: function () {
+                    alert("Sunucu hatası oluştu.");
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            $(document).on("click", ".btn-sil", function () {
+                var id = $(this).data("id");
+                silDemirbas(id);
+            });
+        });
+    </script>
+}
+
+

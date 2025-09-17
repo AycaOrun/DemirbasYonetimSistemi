@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewBag.Title = "zimmet_listesi";
+}
+
+@{
+    ViewBag.Title = "zimmet_listesi";
+}
+
+<h2>Zimmet Listesi</h2>
+
+@using (Html.BeginForm())
+{
+    <div class="form-group">
+        <label>Zimmet Türü Seçin:</label>
+        @Html.DropDownList("ZimmetTuru", (List<SelectListItem>)ViewBag.demirbaslar, "Seçiniz", new { @class = "form-control" })
+    </div>
+
+    <input type="submit" value="Filtrele" class="btn btn-primary" />
+}
+
+

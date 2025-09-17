@@ -1,0 +1,169 @@
+﻿
+<style>
+    .my-textbox,
+    .my-select {
+        width: 200px;
+        padding: 8px;
+        margin-bottom: 20px;
+    }
+    .pasif {
+        background-color: #ffcccc !important;
+    }
+    .aktif {
+        background-color: green !important;
+    }
+</style>
+
+
+
+@model List<Demirbaş_Yönetim_sistemi.Models.personel>
+
+
+@{
+    ViewBag.Title = "PersonelTanimlama";
+    List<Demirbaş_Yönetim_sistemi.departman> departman = ViewBag.birimTanımı as List<Demirbaş_Yönetim_sistemi.departman>;
+    List<Demirbaş_Yönetim_sistemi.view_PersonelDepartman> liste = ViewBag.PersonelDepartman as List<Demirbaş_Yönetim_sistemi.view_PersonelDepartman>;
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <h2>Personel Tanımla</h2>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="mb-3 row">
+                <label for="ad" class="col-md-2 col-form-label">Ad:</label>
+                <div class="col-md-4">
+                    <input type="text" id="ad" name="ad" class="form-control my-textbox" />
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label for="soyad" class="col-md-2 col-form-label">Soyad:</label>
+                <div class="col-md-4">
+                    <input type="text" id="soyad" name="soyad" class="form-control my-textbox" />
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label for="departman" class="col-md-2 col-form-label">Departman:</label>
+                <div class="col-md-4">
+                    <select name="departman_id" id="departman_id" class="form-control my-select" onchange="departmanSecildi(this.value)">
+                        @foreach (var d in (List<Demirbaş_Yönetim_sistemi.departman>)ViewBag.birimTanımı)
+                        {
+                            <option value="@d.Id">@d.Adi</option>
+                        }
+
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label for="ise_baslangic" class="col-md-2 col-form-label">İşe Başlangıç:</label>
+                <div class="col-md-4">
+                    <input type="date" id="ise_baslangic" name="ise_baslangic" class="form-control my-textbox" />
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label for="durum" class="col-md-2 col-form-label">Durum:</label>
+                <div class="col-md-4">
+                    <select name="durum" id="durum" class="form-control my-select">
+                        <option value=1>Aktif</option>
+                        <option value=0>Pasif</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Kaydet</button>
+        }
+    </div>
+
+    <div class="col-md-6">
+        <h2>Personel Listesi</h2>
+
+        <table class="table">
+            <tr>
+                <th>ID:</th>
+                <th>Personel:</th>
+                <th>Departman:</th>
+                <th>İşe başlangıç:</th>
+                <th>İşlemler</th>
+            </tr>
+            @if (ViewBag.PersonelDepartman != null)
+            {
+                var personeller = (List<Demirbaş_Yönetim_sistemi.view_PersonelDepartman>)ViewBag.PersonelDepartman;
+
+                foreach (var item in personeller)
+                {
+                    var rowClass = (item.durum == 0) ? "pasif" : "aktif";
+
+                    <tr id="personel-row-@item.id" class="@rowClass">
+                        <td>@item.id</td>
+                        <td>@item.adsoyad</td>
+                        <td>@item.Adi</td>
+                        <td>@String.Format("{0:yyyy-MM-dd}", item.baslangic)</td>
+                        <td>
+                            @Html.ActionLink("Düzenle", "PersonelDuzenle", "Tanimlamalar", new { id = item.id }, new { @class = "btn btn-warning btn-sm" })
+                            <button class="btn btn-danger btn-sm btn-sil" data-id="@item.id">Sil</button>
+                        </td>
+                    </tr>
+                }
+            }
+
+
+            
+
+
+
+        </table>
+
+
+
+    </div>
+    @section Scripts {
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+        @Html.AntiForgeryToken()  
+
+        <script>
+        function silPersonel(id) {
+            if (!confirm("Bu kaydı silmek istediğinize emin misiniz?")) return;
+
+            var token = $('input[name="__RequestVerificationToken"]').val();
+
+            $.ajax({
+                url: '@Url.Action("PersonelSil", "Tanimlamalar")',
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({ id: id }),
+                headers: {
+                    'RequestVerificationToken': token
+                },
+                success: function (response) {
+                    debugger;
+                    if (response.success) {
+                        $("#personel-row-" + id).fadeOut();
+                    } else {
+                        alert("Silme işlemi başarısız: " + response.mesaj);
+                    }
+                },
+                error: function () {
+                    alert("Sunucu hatası oluştu.");
+                }
+            }); 
+        }
+
+        $(document).ready(function () {
+            $(document).on("click", ".btn-sil", function () {
+                var id = $(this).data("id");
+                silPersonel(id);
+            });
+        });
+        </script>
+    }
+
+</div>
+

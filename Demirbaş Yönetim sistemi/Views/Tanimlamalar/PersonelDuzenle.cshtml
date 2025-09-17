@@ -1,0 +1,75 @@
+﻿
+@model Demirbaş_Yönetim_sistemi.personel
+@{
+    ViewBag.Title = "Personel Düzenle";
+    var departman = ViewBag.birimTanımı as List<Demirbaş_Yönetim_sistemi.departman>;
+}
+
+<h2>Personel Güncelle</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.id)
+
+    <div class="mb-3 row">
+        <label for="ad" class="col-md-2 col-form-label">Ad:</label>
+        <div class="col-md-4">
+            @Html.TextBoxFor(m => m.ad, new { @class = "form-control", @id = "ad" })
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label for="soyad" class="col-md-2 col-form-label">Soyad:</label>
+        <div class="col-md-4">
+            @Html.TextBoxFor(m => m.soyad, new { @class = "form-control", @id = "soyad" })
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label for="departman_id" class="col-md-2 col-form-label">Departman:</label>
+        <div class="col-md-4">
+            <select name="departman_id" id="departman_id" class="form-control my-select">
+                <option value="">-- Seçiniz --</option>
+                @foreach (var d in departman)
+                {
+                    <option value="@d.Id" @(d.Id.Equals(Model.departman_Id) ? "selected" : "")>@d.Adi</option>
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label for="ise_baslangic" class="col-md-2 col-form-label">İşe Başlangıç:</label>
+        <div class="col-md-4">
+            @Html.TextBoxFor(m => m.ise_baslangic, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date", @id = "ise_baslangic" })
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label for="durum" class="col-md-2 col-form-label">Durum:</label>
+        <div class="col-md-4">
+            @{  var rowClass = (Model.durum == 0) ? "Selected" : "";}
+
+            <select name="durum" id="durum" class="form-control">
+               
+                <option value=1 @rowClass > Aktif</option>
+
+         <option value=0 @rowClass>Pasif</option>
+
+
+     </select>
+
+ </div>
+
+</div>
+
+
+<div class="mb-3 row">
+        <div class="col-md-6">
+            <button type="submit" class="btn btn-success">Kaydet</button>
+            <a href="@Url.Action("PersonelTanimlama")" class="btn btn-secondary">İptal</a>
+        </div>
+    </div>
+}
+
